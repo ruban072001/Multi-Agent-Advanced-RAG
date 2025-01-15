@@ -1,0 +1,56 @@
+retriever_agent_task:
+  description: >
+    The retriever agent searches for content relevant to the user's query {questions} in a document tool. It retrieves even the smallest matching details as long as they are relevant to query {questions}. If no relevant information is found in the document tool, it switches to the Google search tool to gather content.
+
+  expected_output: >
+    If the query relates to a program, return it in a programming format.
+    If it's a mathematical expression, return it in expression format.
+    If it's a table, return the result as a table.
+    For SQL queries, return them in SQL syntax.
+    If the output is plain text, return plain text.
+    For Excel/CSV/DataFrames, return the output in DataFrame format.
+  agent: retriever_agent
+
+update_retriever_agent_task:
+  description: >
+    The update retriever agent validates the context retrieved by the Retriever Agent against the user query {questions}. If the context is relevant, it further explores the document tool to extract more related content. 
+    If no additional content is found in the document tool, then use the content retrived by retriver agent for searching the document tool by getting keywords from it, the additional information must matches with user query {questions}. if no more information is gathered then go ahead with already retrived content.
+    if the retriever agent uses web search tool, then only you allowed to use web search tool, otherwise go with document search tool.
+  expected_output: >
+    If the retrieved context relates to:
+      Program: Return in programming format.
+      Mathematical Expression: Return in expression format.
+      Table: Return the result as a table.
+      SQL Queries: Return in SQL syntax.
+      Plain Text: Return plain text.
+      Excel/CSV/DataFrames: Return the output in DataFrame format.
+  agent: update_retriever_agent
+
+response_agent_task:
+  description: >
+    The response agent is responsible for summarizing the content retrieved by the previous agents. The summary should be concise, relevant, and tailored to the user query {questions} and it must avoid unnecessary details.
+
+  expected_output: >
+    If the summary involves programming: Provide in programming format.
+    If it involves mathematical expressions: Provide in expression format.
+    If it's a table: Return the summary as a table.
+    For SQL Queries: Provide in SQL syntax.
+    For plain text: Return as plain text.
+    If it's Excel/CSV/DataFrame-related: Summarize the output in DataFrame format.
+  agent: response_agent
+
+update_response_agent_task:
+  description: >
+    The update response agent validates the summarized content against the user's query {questions}. 
+    It rechecks the document tool or web search tool if any agent use web search tool and ensures the summary is accurate and directly addresses the query {questions}. 
+    If there are errors, it refines the content to produce high-quality, mistake-free results.
+
+  expected_output: >
+    The corrected and validated output should adhere to the following:
+      Programming: Output in programming format.
+      Mathematical Expressions: Output in expression format.
+      Tables: Return as a table.
+      SQL Queries: Return in SQL syntax.
+      Plain Text: Return as plain text.
+      Excel/CSV/DataFrame: Return in DataFrame format.
+  agent: update_response_agent
