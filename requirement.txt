@@ -1,0 +1,8 @@
+crewai
+crewai-tools
+dotenv
+chonkie
+markitdown
+pydantic
+qdrant-client
+streamlit
